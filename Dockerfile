@@ -1,6 +1,6 @@
 # Estágio 1: Build da Aplicação com Maven
 # Usamos uma imagem que já vem com Java 17 e Maven instalados
-FROM eclipse-temurin:17-jdk-jammy as builder
+FROM eclipse-temurin:21-jdk-jammy as builder
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
