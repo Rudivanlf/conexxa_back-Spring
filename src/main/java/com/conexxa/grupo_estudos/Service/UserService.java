@@ -28,9 +28,10 @@ public class UserService {
     public User putUser(User user) {
         User userExist = repository.findById(user.getId()).orElse(null);
         if(Objects.nonNull(userExist)) {
-            userExist.setUsername(user.getUsername());
+            // Linhas corrigidas abaixo
+            userExist.setNome(user.getNome()); // Alterado de setUsername/getUsername
             userExist.setEmail(user.getEmail());
-            userExist.setPassword(user.getPassword());
+            userExist.setSenhaHash(user.getSenhaHash()); // Alterado de setPassword/getPassword
             repository.save(userExist);
         }
         return null;
