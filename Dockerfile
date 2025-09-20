@@ -1,5 +1,5 @@
 # Estágio 1: Build da Aplicação com Maven
-# Usamos uma imagem que já vem com Java 17 e Maven instalados
+# Alteramos a imagem para usar uma com JDK 21
 FROM eclipse-temurin:21-jdk-jammy as builder
 
 # Define o diretório de trabalho dentro do container
@@ -18,17 +18,19 @@ RUN ./mvnw clean package -DskipTests
 
 
 # Estágio 2: Imagem Final de Execução
-# Usamos uma imagem JRE (Java Runtime Environment), que é menor e mais segura
-FROM eclipse-temurin:17-jre-jammy
+# Usamos uma imagem JRE 21, que é menor e mais segura
+FROM eclipse-temurin:21-jre-jammy
 
 # Define o diretório de trabalho
 WORKDIR /app
 
 # Copia o arquivo .jar gerado no estágio de build para a imagem final
+# Certifique-se que o nome do .jar está correto
 COPY --from=builder /app/target/grupo_estudos-0.0.1-SNAPSHOT.jar ./app.jar
 
-# Expõe a porta 8080, que é a porta que o Spring Boot usa por padrão
-EXPOSE 8080
+# Expõe a porta que o Spring Boot usa. Render usa a porta 10000.
+# O Spring Boot vai detectar a variável de ambiente PORT automaticamente.
+EXPOSE 10000
 
 # Comando para iniciar a aplicação quando o container for executado
 ENTRYPOINT ["java", "-jar", "app.jar"]
