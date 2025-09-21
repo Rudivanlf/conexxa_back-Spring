@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.conexxa.grupo_estudos.DTO.GroupRequestDTO;
 import com.conexxa.grupo_estudos.DTO.GroupUpdateRequestDTO;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,4 +84,17 @@ public class GroupController {
         Group updatedGroup = groupService.removeMemberFromGroup(groupId, userId);
         return new GroupResponseDTO(updatedGroup);
     }
+
+    @Operation(summary = "Deletar um grupo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Grupo e suas tarefas deletados com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado")
+    })
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+        groupService.deleteGroup(groupId);
+        // Retorna 204 No Content, um status padrão para deleções bem-sucedidas
+        return ResponseEntity.noContent().build();
+    }
+
 }

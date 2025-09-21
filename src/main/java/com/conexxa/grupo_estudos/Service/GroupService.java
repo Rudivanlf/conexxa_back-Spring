@@ -82,6 +82,20 @@ public class GroupService {
                 .orElseThrow(() -> new RuntimeException("Grupo não encontrado!"));
     }
 
+    public void deleteGroup(Long groupId) {
+        // 1. Encontra o grupo ou lança uma exceção
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado!"));
+
+        // 2. Itera sobre todos os membros do grupo
+        for (User member : group.getMembros()) {
+            // Remove a referência deste grupo da lista de grupos de cada membro
+            member.getGrupos().remove(group);
+        }
+
+        // 3. Deleta o grupo. A exclusão das tarefas ocorrerá em cascata.
+        groupRepository.delete(group);
+    }
 
 
     public List<Group> getAllGroups() {
