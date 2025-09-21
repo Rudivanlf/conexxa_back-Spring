@@ -1,9 +1,12 @@
 package com.conexxa.grupo_estudos.Controller;
 
+import com.conexxa.grupo_estudos.DTO.UserDetailResponseDTO;
 import com.conexxa.grupo_estudos.Model.User;
 import com.conexxa.grupo_estudos.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.stream.Collectors; // Adicione esta importação
 
 import java.util.List;
 
@@ -20,9 +23,12 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return service.getAllUsers(); //adicionei pra ver todos os usuarios
+    public List<UserDetailResponseDTO> getAllUsers() {
+        return service.getAllUsers().stream()
+                .map(UserDetailResponseDTO::new)
+                .collect(Collectors.toList());
     }
+
 
     @PostMapping
     public void postUser(@RequestBody User user) {
@@ -32,8 +38,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return service.getUser(id);
+    public UserDetailResponseDTO getUser(@PathVariable Long id) {
+        User user = service.getUser(id);
+        // Retorna o DTO em vez da entidade para quebrar o loop
+        return new UserDetailResponseDTO(user);
     }
 
     // Em conexxa_back-Spring/src/main/java/com/conexxa/grupo_estudos/Controller/UserController.java
