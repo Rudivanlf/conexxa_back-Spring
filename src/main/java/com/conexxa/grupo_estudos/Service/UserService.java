@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
+import com.conexxa.grupo_estudos.DTO.UserRequestDTO;
 
 @Service
 public class UserService {
@@ -17,7 +18,17 @@ public class UserService {
         this.repository = repository;
     }
 
-    public void postUser(User user) {
+    public void postUser(UserRequestDTO userRequest) {
+        // Crie uma nova entidade User
+        User user = new User();
+
+        // Transfira os dados do DTO para a entidade
+        user.setNome(userRequest.getNome());
+        user.setEmail(userRequest.getEmail());
+        user.setSenhaHash(userRequest.getSenhaHash());
+        user.setCurso(userRequest.getCurso());
+
+        // Salve a entidade no banco de dados
         repository.save(user);
     }
 

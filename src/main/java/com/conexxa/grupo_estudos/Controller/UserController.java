@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.conexxa.grupo_estudos.DTO.UserRequestDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,8 +44,8 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos para o usuário")
     })
     @PostMapping
-    public void postUser(@RequestBody User user) {
-        service.postUser(user);
+    public void postUser(@RequestBody UserRequestDTO userRequest) { // <<< MUDE AQUI
+        service.postUser(userRequest); // <<< E AQUI
     }
 
     @Operation(summary = "Buscar um usuário pelo ID")
