@@ -25,16 +25,17 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
-    public User putUser(User user) {
-        User userExist = repository.findById(user.getId()).orElse(null);
-        if(Objects.nonNull(userExist)) {
-            // Linhas corrigidas abaixo
-            userExist.setNome(user.getNome()); // Alterado de setUsername/getUsername
-            userExist.setEmail(user.getEmail());
-            userExist.setSenhaHash(user.getSenhaHash()); // Alterado de setPassword/getPassword
-            repository.save(userExist);
-        }
-        return null;
+    // Em conexxa_back-Spring/src/main/java/com/conexxa/grupo_estudos/Service/UserService.java
+    public User putUser(Long id, User user) { // Recebe o ID e os dados
+        return repository.findById(id)
+                .map(userExist -> {
+                    userExist.setNome(user.getNome());
+                    userExist.setEmail(user.getEmail());
+                    userExist.setSenhaHash(user.getSenhaHash());
+                    userExist.setCurso(user.getCurso()); // Adicionei o curso também
+                    return repository.save(userExist);
+                })
+                .orElse(null); // Retorna null se o usuário não for encontrado
     }
 
     public void deleteUser(Long id) {

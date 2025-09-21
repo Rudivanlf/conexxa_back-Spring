@@ -31,9 +31,10 @@ public class UserController {
         return service.getUser(id);
     }
 
-    @PutMapping("/{id}")
-    public User putUser(@RequestBody User user) {
-        return service.putUser(user);
+    // Em conexxa_back-Spring/src/main/java/com/conexxa/grupo_estudos/Controller/UserController.java
+    @PutMapping("/{id}") // Caminho que você mencionou
+    public User putUser(@PathVariable Long id, @RequestBody User user) {
+        return service.putUser(id,user);
     }
 
     @DeleteMapping("/{id}")
