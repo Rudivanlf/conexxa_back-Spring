@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors; // Adicione esta importação
+import com.conexxa.grupo_estudos.DTO.LoginRequestDTO;
+import com.conexxa.grupo_estudos.DTO.UserDetailResponseDTO;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -53,5 +56,17 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         service.deleteUser(id);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDetailResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+        try {
+            User user = service.login(loginRequest.getEmail(), loginRequest.getSenha());
+            // Se o login for bem-sucedido, retorna os dados do usuário (sem a senha)
+            return ResponseEntity.ok(new UserDetailResponseDTO(user));
+        } catch (RuntimeException e) {
+            // Se o login falhar (usuário não encontrado ou senha inválida), retorna "Não Autorizado"
+            return ResponseEntity.status(401).build();
+        }
     }
 }

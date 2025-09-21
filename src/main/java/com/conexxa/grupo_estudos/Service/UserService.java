@@ -44,4 +44,19 @@ public class UserService {
     public void deleteUser(Long id) {
         repository.deleteById(id);
     }
+
+    public User login(String email, String senha) {
+        // 1. Encontra o usuário pelo email
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        // 2. Compara a senha fornecida com a senha armazenada (senhaHash)
+        // ATENÇÃO: Esta é uma comparação de texto simples, não segura para produção.
+        if (user.getSenhaHash().equals(senha)) {
+            return user; // Se a senha corresponder, retorna o usuário
+        } else {
+            // Se a senha não corresponder, lança uma exceção
+            throw new RuntimeException("Senha inválida!");
+        }
+    }
 }
