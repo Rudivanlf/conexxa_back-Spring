@@ -16,7 +16,8 @@ public class GroupResponseDTO {
     private UserResponseDTO criador;
     private LocalDateTime dataCriacao;
     private Set<UserResponseDTO> membros;
-    private List<Task> tarefas;
+    private List<TaskResponseDTO> tarefas;
+
 
     // Construtor que converte a entidade Group para o DTO
     public GroupResponseDTO(Group group) {
@@ -28,7 +29,13 @@ public class GroupResponseDTO {
         this.membros = group.getMembros().stream()
                 .map(UserResponseDTO::new)
                 .collect(Collectors.toSet());
-        this.tarefas = group.getTarefas();
+
+        // --- INÍCIO DA MUDANÇA ---
+        // Converte a lista de Task para uma lista de TaskResponseDTO
+        this.tarefas = group.getTarefas().stream()
+                .map(TaskResponseDTO::new)
+                .collect(Collectors.toList());
+        // --- FIM DA MUDANÇA ---
     }
 
     // Getters e Setters
@@ -82,11 +89,12 @@ public class GroupResponseDTO {
         this.membros = membros;
     }
 
-    public List<Task> getTarefas() {
+    public List<TaskResponseDTO> getTarefas() {
         return tarefas;
     }
 
-    public void setTarefas(List<Task> tarefas) {
+
+    public void setTarefas(List<TaskResponseDTO> tarefas) {
         this.tarefas = tarefas;
     }
 }

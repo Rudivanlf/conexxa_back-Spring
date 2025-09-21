@@ -30,7 +30,7 @@ public class TaskService {
     // --- READ ---
     // Retorna todas as tarefas de um grupo específico
     public List<Task> getAllTasksByGroupId(Long groupId) {
-        return taskRepository.findByGrupoId(groupId); // Precisaremos criar este método no repositório
+        return taskRepository.findByGrupoId(groupId); // Precisaremos criar este method
     }
 
     // Retorna uma tarefa específica pelo seu ID
@@ -42,7 +42,7 @@ public class TaskService {
     // --- UPDATE ---
     // Atualiza uma tarefa existente
     public Task updateTask(Long taskId, Task taskDetails) {
-        Task existingTask = getTaskById(taskId); // Reutiliza o método de busca
+        Task existingTask = getTaskById(taskId); // Reutiliza o method
 
         existingTask.setTitulo(taskDetails.getTitulo());
         existingTask.setDescricao(taskDetails.getDescricao());

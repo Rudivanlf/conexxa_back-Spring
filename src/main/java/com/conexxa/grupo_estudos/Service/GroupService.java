@@ -73,6 +73,11 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    public Group getGroupById(Long groupId) {
+        return groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado!"));
+    }
+
 
 
     public List<Group> getAllGroups() {

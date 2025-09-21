@@ -29,6 +29,12 @@ public class GroupController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{groupId}")
+    public GroupResponseDTO getGroupById(@PathVariable Long groupId) {
+        Group group = groupService.getGroupById(groupId);
+        return new GroupResponseDTO(group);
+    }
+
     @PostMapping("/{groupId}/members/{userId}")
     public GroupResponseDTO addMember(@PathVariable Long groupId, @PathVariable Long userId) {
         Group updatedGroup = groupService.addMemberToGroup(groupId, userId);
