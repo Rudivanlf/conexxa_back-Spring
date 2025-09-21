@@ -14,12 +14,16 @@ public class UserController {
 
     @GetMapping("/ola")
     public String ola() {
-        return "Olá!!!";
+        return "Olá!!!"; //Fiz isso aqui pra testar
     }
+
+
 
     @PostMapping
     public void postUser(@RequestBody User user) {
+
         service.postUser(user);
+
     }
 
     @GetMapping("/{id}")
@@ -27,7 +31,7 @@ public class UserController {
         return service.getUser(id);
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public User putUser(@RequestBody User user) {
         return service.putUser(user);
     }
