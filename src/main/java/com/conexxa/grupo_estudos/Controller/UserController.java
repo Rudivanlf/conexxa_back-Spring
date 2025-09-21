@@ -12,6 +12,11 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @GetMapping("/ola")
+    public String ola() {
+        return "Olá!!!";
+    }
+
     @PostMapping
     public void postUser(@RequestBody User user) {
         service.postUser(user);
