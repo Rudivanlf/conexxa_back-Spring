@@ -28,4 +28,18 @@ public class GroupController {
                 .map(GroupResponseDTO::new) // Converte cada Group para GroupResponseDTO
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/{groupId}/members/{userId}")
+    public GroupResponseDTO addMember(@PathVariable Long groupId, @PathVariable Long userId) {
+        Group updatedGroup = groupService.addMemberToGroup(groupId, userId);
+        return new GroupResponseDTO(updatedGroup);
+    }
+
+    @DeleteMapping("/{groupId}/members/{userId}")
+    public GroupResponseDTO removeMember(@PathVariable Long groupId, @PathVariable Long userId) {
+        Group updatedGroup = groupService.removeMemberFromGroup(groupId, userId);
+        return new GroupResponseDTO(updatedGroup);
+    }
+
+
 }

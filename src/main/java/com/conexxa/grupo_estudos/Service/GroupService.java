@@ -38,6 +38,43 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    public Group addMemberToGroup(Long groupId, Long userId) {
+        // Encontra o grupo ou lança uma exceção
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado!"));
+
+        // Encontra o usuário ou lança uma exceção
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        // Adiciona o usuário aos membros do grupo
+        group.getMembros().add(user);
+
+        // Adiciona o grupo à lista de grupos do usuário
+        user.getGrupos().add(group);
+
+        // Salva o grupo (que gerencia a relação)
+        return groupRepository.save(group);
+    }
+
+    public Group removeMemberFromGroup(Long groupId, Long userId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado!"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        // Remove o usuário dos membros do grupo
+        group.getMembros().remove(user);
+
+        // Remove o grupo da lista de grupos do usuário
+        user.getGrupos().remove(group);
+
+        return groupRepository.save(group);
+    }
+
+
+
     public List<Group> getAllGroups() {
         return groupRepository.findAll();
     }
