@@ -4,7 +4,7 @@ import com.conexxa.grupo_estudos.Model.User;
 import com.conexxa.grupo_estudos.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -25,7 +25,6 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
-    // Em conexxa_back-Spring/src/main/java/com/conexxa/grupo_estudos/Service/UserService.java
     public User putUser(Long id, User user) { // Recebe o ID e os dados
         return repository.findById(id)
                 .map(userExist -> {
@@ -36,6 +35,10 @@ public class UserService {
                     return repository.save(userExist);
                 })
                 .orElse(null); // Retorna null se o usuário não for encontrado
+    }
+
+    public List<User> getAllUsers() { //novo metodo para pegar todos os usuarios do banco
+        return repository.findAll();
     }
 
     public void deleteUser(Long id) {

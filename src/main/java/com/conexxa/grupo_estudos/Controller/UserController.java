@@ -5,6 +5,8 @@ import com.conexxa.grupo_estudos.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -17,7 +19,10 @@ public class UserController {
         return "Olá!!!"; //Fiz isso aqui pra testar
     }
 
-
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return service.getAllUsers(); //adicionei pra ver todos os usuarios
+    }
 
     @PostMapping
     public void postUser(@RequestBody User user) {
