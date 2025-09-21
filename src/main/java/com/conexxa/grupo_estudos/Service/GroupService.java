@@ -6,7 +6,8 @@ import com.conexxa.grupo_estudos.Repository.GroupRepository;
 import com.conexxa.grupo_estudos.Repository.UserRepository; // Importe o UserRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.conexxa.grupo_estudos.DTO.GroupRequestDTO;
+import com.conexxa.grupo_estudos.DTO.GroupUpdateRequestDTO;
 import java.util.Collections; // Importe a classe Collections
 import java.util.HashSet; // Importe a classe HashSet
 import java.util.List;
@@ -20,21 +21,24 @@ public class GroupService {
     @Autowired
     private UserRepository userRepository; // Injete o UserRepository
 
-    public Group createGroup(Group group) {
-        // Busca o usuário completo pelo ID fornecido no JSON
-        User criador = userRepository.findById(group.getCriador().getId())
+    public Group createGroup(GroupRequestDTO groupRequest) {
+        User criador = userRepository.findById(groupRequest.getCriadorId())
                 .orElseThrow(() -> new RuntimeException("Criador do grupo não encontrado!"));
 
+        Group group = new Group();
+        group.setNome(groupRequest.getNome());
+        group.setDescricao(groupRequest.getDescricao());
         group.setCriador(criador);
-
-        // Adiciona o criador à lista de membros do grupo
         group.setMembros(new HashSet<>(Collections.singleton(criador)));
-
-        // --- INÍCIO DA NOVA LINHA ---
-        // Adiciona o novo grupo à lista de grupos do usuário criador
         criador.getGrupos().add(group);
-        // --- FIM DA NOVA LINHA ---
 
+        return groupRepository.save(group);
+    }
+
+    public Group updateGroup(Long groupId, GroupUpdateRequestDTO groupRequest) {
+        Group group = getGroupById(groupId); // Reutiliza o method de busca
+        group.setNome(groupRequest.getNome());
+        group.setDescricao(groupRequest.getDescricao());
         return groupRepository.save(group);
     }
 

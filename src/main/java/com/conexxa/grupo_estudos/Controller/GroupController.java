@@ -8,7 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import com.conexxa.grupo_estudos.DTO.GroupRequestDTO;
+import com.conexxa.grupo_estudos.DTO.GroupUpdateRequestDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +26,20 @@ public class GroupController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos para a criação do grupo")
     })
     @PostMapping
-    public GroupResponseDTO createGroup(@RequestBody Group group) {
-        Group newGroup = groupService.createGroup(group);
+    public GroupResponseDTO createGroup(@RequestBody GroupRequestDTO groupRequest) {
+        Group newGroup = groupService.createGroup(groupRequest);
         return new GroupResponseDTO(newGroup);
+    }
+
+    @Operation(summary = "Atualizar nome e descrição de um grupo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Grupo atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado")
+    })
+    @PutMapping("/{groupId}")
+    public GroupResponseDTO updateGroup(@PathVariable Long groupId, @RequestBody GroupUpdateRequestDTO groupRequest) {
+        Group updatedGroup = groupService.updateGroup(groupId, groupRequest);
+        return new GroupResponseDTO(updatedGroup);
     }
 
     @Operation(summary = "Listar todos os grupos")

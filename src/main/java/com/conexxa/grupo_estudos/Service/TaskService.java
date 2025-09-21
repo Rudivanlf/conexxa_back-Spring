@@ -6,7 +6,7 @@ import com.conexxa.grupo_estudos.Repository.GroupRepository;
 import com.conexxa.grupo_estudos.Repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.conexxa.grupo_estudos.DTO.TaskRequestDTO;
 import java.util.List;
 
 @Service
@@ -20,10 +20,17 @@ public class TaskService {
 
     // --- CREATE ---
     // Cria uma tarefa associada a um grupo específico
-    public Task createTask(Long groupId, Task task) {
+    public Task createTask(Long groupId, TaskRequestDTO taskRequest) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Grupo não encontrado para criar a tarefa!"));
+
+        Task task = new Task();
+        task.setTitulo(taskRequest.getTitulo());
+        task.setDescricao(taskRequest.getDescricao());
+        task.setDataEntrega(taskRequest.getDataEntrega());
+        task.setStatus(taskRequest.getStatus());
         task.setGrupo(group);
+
         return taskRepository.save(task);
     }
 
@@ -41,13 +48,13 @@ public class TaskService {
 
     // --- UPDATE ---
     // Atualiza uma tarefa existente
-    public Task updateTask(Long taskId, Task taskDetails) {
-        Task existingTask = getTaskById(taskId); // Reutiliza o method
+    public Task updateTask(Long taskId, TaskRequestDTO taskRequest) {
+        Task existingTask = getTaskById(taskId);
 
-        existingTask.setTitulo(taskDetails.getTitulo());
-        existingTask.setDescricao(taskDetails.getDescricao());
-        existingTask.setDataEntrega(taskDetails.getDataEntrega());
-        existingTask.setStatus(taskDetails.getStatus());
+        existingTask.setTitulo(taskRequest.getTitulo());
+        existingTask.setDescricao(taskRequest.getDescricao());
+        existingTask.setDataEntrega(taskRequest.getDataEntrega());
+        existingTask.setStatus(taskRequest.getStatus());
 
         return taskRepository.save(existingTask);
     }

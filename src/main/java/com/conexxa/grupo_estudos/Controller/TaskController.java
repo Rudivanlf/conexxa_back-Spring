@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.conexxa.grupo_estudos.DTO.TaskRequestDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +26,8 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Grupo com o ID informado não foi encontrado")
     })
     @PostMapping("/groups/{groupId}/tasks")
-    public TaskResponseDTO createTask(@PathVariable Long groupId, @RequestBody Task task) {
-        Task newTask = taskService.createTask(groupId, task);
+    public TaskResponseDTO createTask(@PathVariable Long groupId, @RequestBody TaskRequestDTO taskRequest) {
+        Task newTask = taskService.createTask(groupId, taskRequest);
         return new TaskResponseDTO(newTask);
     }
 
@@ -59,8 +59,8 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
     })
     @PutMapping("/tasks/{taskId}")
-    public TaskResponseDTO updateTask(@PathVariable Long taskId, @RequestBody Task taskDetails) {
-        Task updatedTask = taskService.updateTask(taskId, taskDetails);
+    public TaskResponseDTO updateTask(@PathVariable Long taskId, @RequestBody TaskRequestDTO taskRequest) {
+        Task updatedTask = taskService.updateTask(taskId, taskRequest);
         return new TaskResponseDTO(updatedTask);
     }
 

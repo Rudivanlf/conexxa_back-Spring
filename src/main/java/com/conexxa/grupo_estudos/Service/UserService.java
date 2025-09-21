@@ -36,16 +36,16 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
-    public User putUser(Long id, User user) { // Recebe o ID e os dados
+    public User putUser(Long id, UserRequestDTO userRequest) { // Recebe o DTO
         return repository.findById(id)
                 .map(userExist -> {
-                    userExist.setNome(user.getNome());
-                    userExist.setEmail(user.getEmail());
-                    userExist.setSenhaHash(user.getSenhaHash());
-                    userExist.setCurso(user.getCurso()); // Adicionei o curso também
+                    userExist.setNome(userRequest.getNome());
+                    userExist.setEmail(userRequest.getEmail());
+                    userExist.setSenhaHash(userRequest.getSenhaHash());
+                    userExist.setCurso(userRequest.getCurso());
                     return repository.save(userExist);
                 })
-                .orElse(null); // Retorna null se o usuário não for encontrado
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
     public List<User> getAllUsers() { //novo metodo para pegar todos os usuarios do banco

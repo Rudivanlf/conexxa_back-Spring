@@ -66,8 +66,9 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização")
     })
     @PutMapping("/{id}")
-    public User putUser(@PathVariable Long id, @RequestBody User user) {
-        return service.putUser(id, user);
+    public UserDetailResponseDTO putUser(@PathVariable Long id, @RequestBody UserRequestDTO userRequest) {
+        User updatedUser = service.putUser(id, userRequest);
+        return new UserDetailResponseDTO(updatedUser);
     }
 
     @Operation(summary = "Deletar um usuário")
